@@ -10,7 +10,7 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml
-  - ./vendor/bin/humbug
+  - php -i |grep -qE xdebug && ./vendor/bin/humbug
 
 matrix:
   allow_failures:
