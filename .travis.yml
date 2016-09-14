@@ -10,7 +10,18 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml
-  - if php -i |grep -qE xdebug; then ./vendor/bin/humbug; fi
+  - |
+    if 
+      [[ $TRAVIS_PHP_VERSION = "hhv"* ]]; 
+    then
+      echo 'skip build for hhvm';
+    else
+      if 
+        php -i |grep -qE xdebug; 
+      then 
+        ./vendor/bin/humbug; 
+      fi
+    fi
 
 matrix:
   allow_failures:
