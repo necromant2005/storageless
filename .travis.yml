@@ -5,11 +5,22 @@ php:
   - 7.1
   - hhvm
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 before_script:
-  - composer update --prefer-source --ignore-platform-reqs
+  - composer update --prefer-dist --ignore-platform-reqs
 
 script:
-  - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml
+  - |
+    if 
+      [[ $TRAVIS_PHP_VERSION = "hhv"* ]];
+    then
+      hhvm -v Eval.EnableHipHopSyntax=true ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml;
+    else
+      ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml;
+    fi
   - |
     if 
       [[ $TRAVIS_PHP_VERSION = "hhv"* ]]; 
